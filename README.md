@@ -6,3 +6,7 @@ Nest.js(Node version 20.11.1) </br>
 Ethers.js </br>
 Typescript </br>
 Docker  </br>
+
+
+## Notion
+https://political-tsunami-40f.notion.site/Mesher-Backend-12611fde6e0380b1b401c63cd5a7b876?pvs=4
