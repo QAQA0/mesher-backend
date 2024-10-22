@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { TransactionReceipt } from 'ethers';
-import { EthersService } from '../../../providers/ethers/application/ethers.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TransactionRequestDto } from 'src/modules/block-chain/dtos/transaction-request.dto';
+import { TransactionRequestDto } from '../dtos/transaction-request.dto';
 import { BlockWithTransactionReceiptDto } from '../dtos/block-with-transaction-receipt.dto';
+import { BlockChainService } from '../services/block-chain.sevice';
 
 @ApiTags('block-chain')
 @Controller('block-chain')
 export class BlockChainController {
-  constructor(private readonly ethersService: EthersService) {}
+  constructor(private readonly blockChainService: BlockChainService) {}
 
   @Post('save')
   @ApiBody({ type: TransactionRequestDto })
@@ -21,7 +21,7 @@ export class BlockChainController {
   save(
     @Body() transactionRequest: TransactionRequestDto,
   ): Promise<TransactionReceipt> {
-    return this.ethersService.save(transactionRequest);
+    return this.blockChainService.save(transactionRequest);
   }
 
   @Get('block')
@@ -31,7 +31,7 @@ export class BlockChainController {
   getBlock(
     @Query('blockHash') blockHash: string,
   ): Promise<BlockWithTransactionReceiptDto> {
-    return this.ethersService.findBlock(blockHash);
+    return this.blockChainService.findBlock(blockHash);
   }
 
   @Get('transaction')
@@ -41,6 +41,6 @@ export class BlockChainController {
   getTransactionReceipt(
     @Query('transactionHash') transactionHash: string,
   ): Promise<TransactionReceipt> {
-    return this.ethersService.findTransactionReceipt(transactionHash);
+    return this.blockChainService.findTransactionReceipt(transactionHash);
   }
 }

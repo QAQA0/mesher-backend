@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EthersService } from '../application/ethers.service';
+import { BlockChainService } from './block-chain.sevice';
+import { EthersModule } from '../../../providers/ethers/ethers.module';
 
-describe('EthersService', () => {
-  let service: EthersService;
+describe('BlockChainService', () => {
+  let service: BlockChainService;
   const blockHash =
     '0xc7c9625aa709521bdc2d920e3ec00f45c3e2f5c6c4b1ad7a7f41c4d5b4a8a77c';
   const transactionHash =
@@ -10,10 +11,11 @@ describe('EthersService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EthersService],
+      imports: [EthersModule],
+      providers: [BlockChainService],
     }).compile();
 
-    service = module.get<EthersService>(EthersService);
+    service = module.get<BlockChainService>(BlockChainService);
   });
 
   it('block', async () => {

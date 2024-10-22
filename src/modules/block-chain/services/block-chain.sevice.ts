@@ -1,21 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ethers, TransactionReceipt, Wallet } from 'ethers';
 import * as dotenv from 'dotenv';
-import { BlockWithTransactionReceiptDto } from '../../../modules/block-chain/dtos/block-with-transaction-receipt.dto';
-import { TransactionRequestDto } from '../../../modules/block-chain/dtos/transaction-request.dto';
+import { TransactionRequestDto } from '../dtos/transaction-request.dto';
+import { BlockWithTransactionReceiptDto } from '../dtos/block-with-transaction-receipt.dto';
+import { EthersService } from '../../../providers/ethers/ethers.service';
 
 dotenv.config();
 
 @Injectable()
-export class EthersService {
-  private network: string = process.env.ETHEREUM_NETWORK;
-  private infuraApiKey: string = process.env.INFURA_API_KEY;
-  private provider = new ethers.InfuraProvider();
-  private wallet = Wallet.createRandom(this.provider);
-
-  constructor() {
-    this.provider = new ethers.InfuraProvider(this.network, this.infuraApiKey);
-  }
+export class BlockChainService {
+  constructor(private readonly ethersService: EthersService) {}
 
   /**
    * 블록체인 데이터를 데이터베이스에 저장합니다.
@@ -25,13 +23,12 @@ export class EthersService {
     transactionRequestDto: TransactionRequestDto,
   ): Promise<TransactionReceipt> {
     try {
-      const response = await this.wallet.sendTransaction(transactionRequestDto);
-      const receipt = await response.wait();
+      const receipt = this.ethersService.save(transactionRequestDto);
 
       if (receipt != null) {
         return receipt;
       } else {
-        throw BadRequestException;
+        throw new InternalServerErrorException('receipt is null');
       }
     } catch (error) {
       console.error(error);
@@ -48,15 +45,10 @@ export class EthersService {
       console.log(blockHash);
 
       //Block 조회
-      const block = await this.provider.getBlock(blockHash);
+      const block = await this.ethersService.findBlock(blockHash);
       //Block의 TransactionReceipts 조회
-      const transactionReceipts = await Promise.all(
-        block.transactions.map(async (transactionHash) => {
-          const transactionReceipt =
-            await this.provider.getTransactionReceipt(transactionHash);
-          return transactionReceipt;
-        }),
-      );
+      const transactionReceipts =
+        await this.ethersService.findTransactionReceiptByBlock(block);
 
       return new BlockWithTransactionReceiptDto(block, transactionReceipts);
     } catch (error) {
@@ -77,7 +69,7 @@ export class EthersService {
 
       //TransactionReceipts 조회
       const transactionReceipt =
-        await this.provider.getTransactionReceipt(transactionHash);
+        await this.ethersService.findTransactionReceipt(transactionHash);
       return transactionReceipt;
     } catch (error) {
       console.error(error);

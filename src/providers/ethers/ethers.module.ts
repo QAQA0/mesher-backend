@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EthersService } from '../application/ethers.service';
+import { EthersService } from './ethers.service';
 
 @Module({
   providers: [EthersService],
