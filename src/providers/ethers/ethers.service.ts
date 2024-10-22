@@ -7,8 +7,8 @@ dotenv.config();
 
 @Injectable()
 export class EthersService {
-  private network: string = process.env.ETHEREUM_NETWORK;
-  private infuraApiKey: string = process.env.INFURA_API_KEY;
+  private readonly network: string = process.env.ETHEREUM_NETWORK;
+  private readonly infuraApiKey: string = process.env.INFURA_API_KEY;
   private provider = new ethers.InfuraProvider();
   private wallet = Wallet.createRandom(this.provider);
 
@@ -34,7 +34,7 @@ export class EthersService {
 
   /**
    * 블록을 기준으로 트랜잭션 영수증 조회
-   * @param block 
+   * @param block
    */
   async findTransactionReceiptByBlock(block: Block) {
     const transactionReceipts = await Promise.all(
