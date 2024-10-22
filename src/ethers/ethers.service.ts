@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ethers, TransactionReceipt, TransactionRequest, Wallet } from 'ethers';
+import { ethers, TransactionReceipt, Wallet } from 'ethers';
 import * as dotenv from 'dotenv';
-import { BlockWithTransactionReceiptDto } from './block-with-transaction-receipt.dto';
+import { BlockWithTransactionReceiptDto } from './dto/block-with-transaction-receipt.dto';
+import { TransactionRequestDto } from './dto/transaction-request.dto';
 
 dotenv.config();
 
@@ -18,13 +19,13 @@ export class EthersService {
 
   /**
    * 블록체인 데이터를 데이터베이스에 저장합니다.
-   * @param transactionRequest
+   * @param transactionRequestDto
    */
   async save(
-    transactionRequest: TransactionRequest,
+    transactionRequestDto: TransactionRequestDto,
   ): Promise<TransactionReceipt> {
     try {
-      const response = await this.wallet.sendTransaction(transactionRequest);
+      const response = await this.wallet.sendTransaction(transactionRequestDto);
       const receipt = await response.wait();
 
       if (receipt != null) {
