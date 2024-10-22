@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { EthersModule } from './ethers/ethers.module';
-import { BlockChainController } from './block-chain/block-chain.controller';
+import { EthersModule } from './providers/ethers/infrastructure/ethers.module';
+import { BlockChainController } from './modules/block-chain/infrastructure/block-chain.controller';
 
 @Module({
   imports: [EthersModule],
   controllers: [BlockChainController],
-  exports: [EthersModule]
+  exports: [EthersModule],
 })
 export class AppModule {}

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ethers, TransactionReceipt, Wallet } from 'ethers';
 import * as dotenv from 'dotenv';
-import { BlockWithTransactionReceiptDto } from './dto/block-with-transaction-receipt.dto';
-import { TransactionRequestDto } from './dto/transaction-request.dto';
+import { BlockWithTransactionReceiptDto } from '../../../modules/block-chain/dtos/block-with-transaction-receipt.dto';
+import { TransactionRequestDto } from '../../../modules/block-chain/dtos/transaction-request.dto';
 
 dotenv.config();
 

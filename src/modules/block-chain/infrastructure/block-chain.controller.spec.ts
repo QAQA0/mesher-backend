@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlockChainController } from './block-chain.controller';
-import { EthersModule } from '../ethers/ethers.module';
+import { EthersModule } from '../../../providers/ethers/infrastructure/ethers.module';
 
 describe('BlockChainController', () => {
   let controller: BlockChainController;

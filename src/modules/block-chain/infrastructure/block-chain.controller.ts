@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { TransactionReceipt } from 'ethers';
-import { BlockWithTransactionReceiptDto } from 'src/ethers/dto/block-with-transaction-receipt.dto';
-import { EthersService } from '../ethers/ethers.service';
+import { EthersService } from '../../../providers/ethers/application/ethers.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TransactionRequestDto } from 'src/ethers/dto/transaction-request.dto';
+import { TransactionRequestDto } from 'src/modules/block-chain/dtos/transaction-request.dto';
+import { BlockWithTransactionReceiptDto } from '../dtos/block-with-transaction-receipt.dto';
 
 @ApiTags('block-chain')
 @Controller('block-chain')

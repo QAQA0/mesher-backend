@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EthersService } from './ethers.service';
+import { EthersService } from '../application/ethers.service';
 
 describe('EthersService', () => {
   let service: EthersService;
-  const blockHash = "0xc7c9625aa709521bdc2d920e3ec00f45c3e2f5c6c4b1ad7a7f41c4d5b4a8a77c";
-  const transactionHash = "0x6eb771a03ad23fed33ddf8c3076929f30afc78ebe9bc32fdbc0817f91138a604";
+  const blockHash =
+    '0xc7c9625aa709521bdc2d920e3ec00f45c3e2f5c6c4b1ad7a7f41c4d5b4a8a77c';
+  const transactionHash =
+    '0x6eb771a03ad23fed33ddf8c3076929f30afc78ebe9bc32fdbc0817f91138a604';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
