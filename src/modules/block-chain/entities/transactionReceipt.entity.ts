@@ -17,7 +17,7 @@ export class TransactionReceiptEntity {
   @Column('varchar')
   from: string;
 
-  @Column('varchar')
+  @Column({ type: 'varchar', nullable: true })
   to: string;
 
   @Column('bigint')
@@ -29,7 +29,7 @@ export class TransactionReceiptEntity {
   @Column('bigint')
   gasPrice: bigint;
 
-  @Column()
+  @Column({ nullable: true })
   status: number;
 
   static builder() {

@@ -15,7 +15,7 @@ export class BlockEntity {
   @Column()
   timestamp: number;
 
-  @Column('varchar')
+  @Column({ type: 'varchar', nullable: true })
   nonce: string;
 
   @Column('bigint')
@@ -27,10 +27,10 @@ export class BlockEntity {
   @Column('bigint')
   gasUsed: bigint;
 
-  @Column('varchar')
+  @Column({ type: 'varchar', nullable: true })
   miner: string;
 
-  @Column('bigint')
+  @Column({ type: 'bigint', nullable: true })
   baseFeePerGas: bigint;
 
   @Column('simple-array')
