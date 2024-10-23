@@ -31,7 +31,7 @@ ethersService.getDatas(number);
 
 // ethers.service.ts  </br>
 async getLatestData()
-- 스케줄러를 이용하여 최신 블록 데이터를 가져옵니다. (12초 간격)
+- 최신 블록 데이터를 가져옵니다.
 
 ### 데이터 조회
 
