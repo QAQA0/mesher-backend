@@ -2,11 +2,13 @@
 매셔 백엔드 과제전형 리포지토리입니다.
 
 ## 서버 실행 방법
-$ docker-compose up
-localhost:3000 포트로 접속
+서버 실행 전 main.ts의 ethersService.getDatas 메서드에 초기 Block 데이터를 몇 개 가져올 지 입력해주세요. </br>
+$ docker-compose up 명령어 입력 </br>
+localhost:3000 포트로 접속 </br>
 
-테스트 작성 완료
-Docker-compose 설정 완료
+## 현재 진행도
+테스트 작성 완료 </br>
+Docker-compose 설정 완료 </br>
 
 ## 사용 스택
 Nest.js(Node version 20.11.1) </br>
