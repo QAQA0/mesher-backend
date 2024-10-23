@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { EthersService } from './providers/ethers/ethers.service';
-import { GlobalExceptionFilter } from './exception/filter/global-exception.filter';
-import { SlackService } from './providers/slack/slack.service';
+import { GlobalExceptionFilter } from './common/exception/filter/global-exception.filter';
+import { EthersService } from './modules/ethers/ethers.service';
+import { SlackService } from './modules/slack/slack.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

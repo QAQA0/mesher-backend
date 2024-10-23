@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlockChainService } from './block-chain.sevice';
-import { EthersModule } from '../../../providers/ethers/ethers.module';
 import { AppModule } from '../../../app.module';
-import { SlackModule } from '../../../providers/slack/slack.module';
 import { BlockEntityRepository } from '../repository/block-entity.repository';
 import { TransactionReceiptEntityRepository } from '../repository/transaction-receipt-entity.repository';
 import { LogEntityRepository } from '../repository/log-entity.repository';
+import { EthersModule } from '../../../modules/ethers/ethers.module';
+import { SlackModule } from '../../../modules/slack/slack.module';
 
 describe('BlockChainService', () => {
   let service: BlockChainService;

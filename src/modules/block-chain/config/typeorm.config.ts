@@ -15,7 +15,7 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       dropSchema: false,
       keepConnectionAlive: true,
       logging: true,
-      entities: [`${__dirname}/../../entities/*.entity{.ts,.js}`],
+      entities: [`${__dirname}/../entities/*.entity{.ts,.js}`],
       extra: {
         max: 20,
       },

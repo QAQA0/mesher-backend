@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlockEntityRepository } from './block-entity.repository';
-import { EthersModule } from '../../../providers/ethers/ethers.module';
 import { BlockEntity } from '../entities/block.entity';
-import { EthersService } from '../../../providers/ethers/ethers.service';
 import { TransactionReceiptEntityRepository } from './transaction-receipt-entity.repository';
 import { LogEntityRepository } from './log-entity.repository';
 import { TransactionReceiptEntity } from '../entities/transactionReceipt.entity';
 import { AppModule } from '../../../app.module';
+import { EthersService } from '../../../modules/ethers/ethers.service';
+import { EthersModule } from '../../../modules/ethers/ethers.module';
 
 describe('BlockEntityRepository', () => {
   let blockRepository: BlockEntityRepository;

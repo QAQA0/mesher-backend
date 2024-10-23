@@ -6,9 +6,9 @@ import { BlockEntity } from './entities/block.entity';
 import { TransactionReceiptEntity } from './entities/transactionReceipt.entity';
 import { BlockEntityRepository } from './repository/block-entity.repository';
 import { TransactionReceiptEntityRepository } from './repository/transaction-receipt-entity.repository';
-import { SlackModule } from '../../providers/slack/slack.module';
 import { LogEntity } from './entities/log.entity';
 import { LogEntityRepository } from './repository/log-entity.repository';
+import { SlackModule } from '../slack/slack.module';
 
 @Module({
   imports: [
