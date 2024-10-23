@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { EthersModule } from './providers/ethers/ethers.module';
 import { BlockChainController } from './modules/block-chain/controllers/block-chain.controller';
 import { BlockChainModule } from './modules/block-chain/block-chain.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeormConfig } from './modules/block-chain/config/database/typeorm.config';
+import { TypeormConfig } from './modules/block-chain/config/typeorm.config';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { SlackModule } from './providers/slack/slack.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { EthersModule } from './modules/ethers/ethers.module';
+import { SlackModule } from './modules/slack/slack.module';
 
 @Module({
   imports: [

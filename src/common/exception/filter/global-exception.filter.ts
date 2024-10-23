@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { SlackService } from 'src/providers/slack/slack.service';
+import { SlackService } from '../../../modules/slack/slack.service';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {

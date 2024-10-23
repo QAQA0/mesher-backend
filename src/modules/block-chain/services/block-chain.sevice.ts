@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 import { BlockEntityRepository } from '../repository/block-entity.repository';
 import { TransactionReceiptEntityRepository } from '../repository/transaction-receipt-entity.repository';
 import { Cron } from '@nestjs/schedule';
-import { SlackService } from '../../../providers/slack/slack.service';
 import { LogEntityRepository } from '../repository/log-entity.repository';
 import { BlockWithTransactionReceiptAndLogDto } from '../dtos/block-with-transaction-receipt-and-log.dto';
 import { TransactionReceiptWithLogDto } from '../dtos/transaction-receipt-with-log.dto';
+import { SlackService } from '../../../modules/slack/slack.service';
 
 dotenv.config();
 
