@@ -2,10 +2,10 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('transaction_receipt')
 export class TransactionReceiptEntity {
-  @PrimaryColumn()
+  @PrimaryColumn('varchar')
   transactionHash: string;
 
-  @Column()
+  @Column('varchar')
   blockHash: string;
 
   @Column()
@@ -14,21 +14,87 @@ export class TransactionReceiptEntity {
   @Column()
   transactionIndex: number;
 
-  @Column()
+  @Column('varchar')
   from: string;
 
-  @Column()
+  @Column('varchar')
   to: string;
 
-  @Column()
-  cumulativeGasUsed: string;
+  @Column('bigint')
+  cumulativeGasUsed: bigint;
+
+  @Column('bigint')
+  gasUsed: bigint;
+
+  @Column('bigint')
+  gasPrice: bigint;
 
   @Column()
-  gasUsed: string;
+  status: number;
 
-  @Column()
-  effectiveGasPrice: string;
+  static builder() {
+    return new TransactionReceiptEntityBuilder();
+  }
+}
 
-  @Column()
-  status: boolean;
+class TransactionReceiptEntityBuilder {
+  private transactionReceiptEntity: TransactionReceiptEntity;
+
+  constructor() {
+    this.transactionReceiptEntity = new TransactionReceiptEntity();
+  }
+
+  setTransactionHash(transactionHash: string) {
+    this.transactionReceiptEntity.transactionHash = transactionHash;
+    return this;
+  }
+
+  setBlockHash(blockHash: string) {
+    this.transactionReceiptEntity.blockHash = blockHash;
+    return this;
+  }
+
+  setBlockNumber(blockNumber: number) {
+    this.transactionReceiptEntity.blockNumber = blockNumber;
+    return this;
+  }
+
+  setTransactionIndex(transactionIndex: number) {
+    this.transactionReceiptEntity.transactionIndex = transactionIndex;
+    return this;
+  }
+
+  setFrom(from: string) {
+    this.transactionReceiptEntity.from = from;
+    return this;
+  }
+
+  setTo(to: string) {
+    this.transactionReceiptEntity.to = to;
+    return this;
+  }
+
+  setCumulativeGasUsed(cumulativeGasUsed: bigint) {
+    this.transactionReceiptEntity.cumulativeGasUsed = cumulativeGasUsed;
+    return this;
+  }
+
+  setGasUsed(gasUsed: bigint) {
+    this.transactionReceiptEntity.gasUsed = gasUsed;
+    return this;
+  }
+
+  setGasPrice(gasPrice: bigint) {
+    this.transactionReceiptEntity.gasPrice = gasPrice;
+    return this;
+  }
+
+  setStatus(status: number) {
+    this.transactionReceiptEntity.status = status;
+    return this;
+  }
+
+  build(): TransactionReceiptEntity {
+    return this.transactionReceiptEntity;
+  }
 }

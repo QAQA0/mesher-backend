@@ -11,13 +11,13 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       username: 'postgres',
       password: 'postgres',
       database: 'blockchain',
-      synchronize: true,
+      synchronize: false,
       dropSchema: false,
       keepConnectionAlive: true,
       logging: true,
       entities: [`${__dirname}/../../entities/*.entity{.ts,.js}`],
       extra: {
-        max: 100,
+        max: 20,
       },
     } as TypeOrmModuleOptions;
   }

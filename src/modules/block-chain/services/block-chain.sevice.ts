@@ -1,56 +1,48 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { ethers, TransactionReceipt, Wallet } from 'ethers';
+import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
-import { TransactionRequestDto } from '../dtos/transaction-request.dto';
-import { BlockWithTransactionReceiptDto } from '../dtos/block-with-transaction-receipt.dto';
-import { EthersService } from '../../../providers/ethers/ethers.service';
+import { BlockEntityRepository } from '../repository/block-entity.repository';
+import { TransactionReceiptEntityRepository } from '../repository/transaction-receipt-entity.repository';
+import { Cron } from '@nestjs/schedule';
+import { SlackService } from 'src/providers/slack/slack.service';
+import { LogEntityRepository } from '../repository/log-entity.repository';
+import { BlockWithTransactionReceiptAndLogDto } from '../dtos/block-with-transaction-receipt-and-log.dto';
+import { TransactionReceiptWithLogDto } from '../dtos/transaction-receipt-with-log.dto';
 
 dotenv.config();
 
 @Injectable()
 export class BlockChainService {
-  constructor(private readonly ethersService: EthersService) {}
-
-  /**
-   * 블록체인 데이터를 데이터베이스에 저장합니다.
-   * @param transactionRequestDto
-   */
-  async save(
-    transactionRequestDto: TransactionRequestDto,
-  ): Promise<TransactionReceipt> {
-    try {
-      const receipt = this.ethersService.save(transactionRequestDto);
-
-      if (receipt != null) {
-        return receipt;
-      } else {
-        throw new InternalServerErrorException('receipt is null');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  constructor(
+    private readonly slackService: SlackService,
+    private readonly blockRepository: BlockEntityRepository,
+    private readonly transactionReceiptRepository: TransactionReceiptEntityRepository,
+    private readonly logRepository: LogEntityRepository,
+  ) {}
 
   /**
    * BlockHash 값을 기준으로 Block과 내부의 TransactionReceipt, Log를 조회합니다.
    * @param blockHash
    * @returns Promise<BlockWithTransactionReceiptDto>
    */
-  async findBlock(blockHash: string): Promise<BlockWithTransactionReceiptDto> {
+  async findBlock(
+    blockHash: string,
+  ): Promise<BlockWithTransactionReceiptAndLogDto> {
     try {
       console.log(blockHash);
 
       //Block 조회
-      const block = await this.ethersService.findBlock(blockHash);
+      const block = await this.blockRepository.findBlockByHash(blockHash);
       //Block의 TransactionReceipts 조회
       const transactionReceipts =
-        await this.ethersService.findTransactionReceiptByBlock(block);
+        await this.transactionReceiptRepository.findAllByBlockHash(blockHash);
+      //TransactionReceipt의 Logs 조회
+      const logs = await this.logRepository.findAllLogByBlockHash(blockHash);
 
-      return new BlockWithTransactionReceiptDto(block, transactionReceipts);
+      return new BlockWithTransactionReceiptAndLogDto(
+        block,
+        transactionReceipts,
+        logs,
+      );
     } catch (error) {
       console.error(error);
     }
@@ -59,20 +51,45 @@ export class BlockChainService {
   /**
    * TransactionHash 값을 기준으로 TransactionReceipt, Log를 조회합니다.
    * @param transactionHash
-   * @returns Promise<TransactionReceipt>
+   * @returns Promise<TransactionReceiptWithLogDto>
    */
   async findTransactionReceipt(
     transactionHash: string,
-  ): Promise<TransactionReceipt> {
+  ): Promise<TransactionReceiptWithLogDto> {
     try {
       console.log(transactionHash);
 
       //TransactionReceipts 조회
       const transactionReceipt =
-        await this.ethersService.findTransactionReceipt(transactionHash);
-      return transactionReceipt;
+        await this.transactionReceiptRepository.findOne(transactionHash);
+      //Log 조회
+      const logs =
+        await this.logRepository.findAllByTransactionHash(transactionHash);
+
+      return new TransactionReceiptWithLogDto(transactionReceipt, logs);
     } catch (error) {
       console.error(error);
     }
+  }
+
+  /**
+   * 5분마다 블록과 트랜잭션 영수증, 로그의 개수를 구하는 메서드 입니다.
+   */
+  @Cron('*/5 * * * *')
+  async getCounts() {
+    const blockCount = await this.blockRepository.getDataCount();
+    const transactionReceiptCount =
+      await this.transactionReceiptRepository.getDataCount();
+    const logCount = await this.logRepository.getDataCount();
+
+    const message = `
+*현재 데이터 개수*
+
+> Blockㅤㅤㅤㅤㅤㅤㅤㅤ:   ${blockCount} 개
+> TransactionReceiptㅤ:   ${transactionReceiptCount} 개
+> Logㅤㅤㅤㅤㅤㅤㅤㅤㅤ:   ${logCount} 개
+`;
+
+    this.slackService.postLogToSlack(message);
   }
 }
