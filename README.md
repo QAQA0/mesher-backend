@@ -15,22 +15,22 @@ URL: http://localhost:3000/api
 ## 기능
 ### 데이터 저장
 //main.ts </br>
-ethersService.getDatas( number ); </br>
+ethersService.getDatas( number );
 - number 입력 시 number만큼의 데이터를 가져와 Database에 저장합니다. </br>
  </br>
 //ethers.service.ts </br>
-async getLatestData() </br>
+async getLatestData()
 - 스케줄러를 이용하여 최신 블록 데이터를 가져옵니다. (12초) </br>
-
+ </br>
 ### 데이터 조회
 #### Block 조회
 //block-chain.service.ts </br>
-async findBlock(blockHash: string): Promise<BlockWithTransactionReceiptAndLogDto> </br>
+async findBlock(blockHash: string): Promise<BlockWithTransactionReceiptAndLogDto>
 - 블록 Hash를 기준으로 데이터베이스에 저장되어있는 블록, 트랜잭션 영수증, 로그 데이터를 가져옵니다. </br>
  </br>
 #### TransactionReceipt 조회
 //block-chain.service.ts </br>
-async findTransactionReceipt(transactionHash: string): Promise<TransactionReceiptEntity> </br>
+async findTransactionReceipt(transactionHash: string): Promise<TransactionReceiptEntity>
 - 트랜잭션 영수증 Hash를 기준으로 데이터베이스에 저장되어있는 트랜잭션 영수증, 로그 데이터를 가져옵니다. </br>
  </br>
  
