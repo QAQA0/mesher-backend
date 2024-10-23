@@ -6,12 +6,12 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
-      host: 'localhost',
+      host: 'db',
       port: 5432,
-      username: 'postgres',
-      password: 'postgres',
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
       database: 'blockchain',
-      synchronize: false,
+      synchronize: true,
       dropSchema: false,
       keepConnectionAlive: true,
       logging: true,
