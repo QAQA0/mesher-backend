@@ -30,11 +30,15 @@ export class EthersService {
     const latestBlockNumber = await this.provider.getBlockNumber();
     const queryRunner = this.dataSource.createQueryRunner();
 
-    //트랜잭션 시작
+    // 트랜잭션 시작
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      const blockEntities = [];
+      const transactionEntities = [];
+      const logEntities = [];
+
       for (let i = 0; i < blockCount; i++) {
         const block = await this.provider.getBlock(latestBlockNumber - i);
 
@@ -53,10 +57,9 @@ export class EthersService {
             .setTransactions(block.transactions as string[])
             .build();
 
-          //블록 저장
-          await queryRunner.manager.save(blockEntity);
+          blockEntities.push(blockEntity);
 
-          //병렬 처리
+          // 병렬 처리
           const transactionPromise = block.transactions.map(async (txHash) => {
             const receipt = await this.provider.getTransactionReceipt(txHash);
 
@@ -73,25 +76,21 @@ export class EthersService {
               .setTransactionIndex(receipt.index)
               .build();
 
-            //트랜잭션 저장
-            await queryRunner.manager.save(transactionEntity);
+            transactionEntities.push(transactionEntity);
 
-            const logPromise = receipt.logs.map(
-              async (transactionReceiptLog) => {
-                const logEntity = LogEntity.builder()
-                  .setLogIndex(transactionReceiptLog.index)
-                  .setTransactionHash(transactionReceiptLog.transactionHash)
-                  .setBlockHash(transactionReceiptLog.blockHash)
-                  .setBlockNumber(transactionReceiptLog.blockNumber)
-                  .setAddress(transactionReceiptLog.address)
-                  .setTopics(transactionReceiptLog.topics as string[])
-                  .setData(transactionReceiptLog.data)
-                  .build();
+            const logPromise = receipt.logs.map((transactionReceiptLog) => {
+              const logEntity = LogEntity.builder()
+                .setLogIndex(transactionReceiptLog.index)
+                .setTransactionHash(transactionReceiptLog.transactionHash)
+                .setBlockHash(transactionReceiptLog.blockHash)
+                .setBlockNumber(transactionReceiptLog.blockNumber)
+                .setAddress(transactionReceiptLog.address)
+                .setTopics(transactionReceiptLog.topics as string[])
+                .setData(transactionReceiptLog.data)
+                .build();
 
-                //로그 저장
-                return queryRunner.manager.save(logEntity);
-              },
-            );
+              logEntities.push(logEntity);
+            });
 
             await Promise.all(logPromise);
           });
@@ -100,13 +99,31 @@ export class EthersService {
         }
       }
 
-      //작업 완료 시 커밋
+      // 블록 저장
+      if (blockEntities.length > 0) {
+        await queryRunner.manager.save(BlockEntity, blockEntities);
+      }
+
+      // 트랜잭션 저장
+      if (transactionEntities.length > 0) {
+        await queryRunner.manager.save(
+          TransactionReceiptEntity,
+          transactionEntities,
+        );
+      }
+
+      // 로그 저장
+      if (logEntities.length > 0) {
+        await queryRunner.manager.save(LogEntity, logEntities);
+      }
+
+      // 작업 완료 시 커밋
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
     } finally {
-      //트랜잭션 종료
+      // 트랜잭션 종료
       await queryRunner.release();
     }
   }
