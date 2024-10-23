@@ -21,7 +21,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentFactory);
 
   //서버 실행 시 가져올 블럭 개수
-  await ethersService.getDatas(0);
+  await ethersService.getDatas(10);
   await app.listen(process.env.PORT ?? 3000);
 }
 
