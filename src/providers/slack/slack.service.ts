@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
 import { firstValueFrom } from 'rxjs';
-import { SlackConfig } from 'src/modules/block-chain/config/slack/slack.config';
+import { SlackConfig } from '../../modules/block-chain/config/slack/slack.config';
 
 dotenv.config();
 

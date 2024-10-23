@@ -5,7 +5,7 @@ import { BlockEntityRepository } from '../../modules/block-chain/repository/bloc
 import { TransactionReceiptEntityRepository } from '../../modules/block-chain/repository/transaction-receipt-entity.repository';
 import { BlockEntity } from '../../modules/block-chain/entities/block.entity';
 import { TransactionReceiptEntity } from '../../modules/block-chain/entities/transactionReceipt.entity';
-import { LogEntity } from 'src/modules/block-chain/entities/log.entity';
+import { LogEntity } from '../../modules/block-chain/entities/log.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BlockEntity, TransactionReceiptEntity, LogEntity])],

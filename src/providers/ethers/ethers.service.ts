@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
 import * as dotenv from 'dotenv';
 import { BlockEntity } from '../../modules/block-chain/entities/block.entity';
-import { TransactionReceiptEntity } from 'src/modules/block-chain/entities/transactionReceipt.entity';
+import { TransactionReceiptEntity } from '../../modules/block-chain/entities/transactionReceipt.entity';
 import { DataSource } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
-import { LogEntity } from 'src/modules/block-chain/entities/log.entity';
+import { LogEntity } from '../../modules/block-chain/entities/log.entity';
 
 dotenv.config();
 
@@ -117,5 +117,17 @@ export class EthersService {
   @Cron('*/12 * * * * *')
   async getLatestData() {
     await this.getDatas(1);
+  }
+
+  /**
+   * 가장 최근에 생성된 블록 데이터 하나를 가져옵니다.
+   * (테스트용 메서드)
+   */
+  async getBlock() {
+    return await this.provider.getBlock('latest');
+  }
+
+  async getTransactionReceipt(hash: string) {
+    return await this.provider.getTransactionReceipt(hash);
   }
 }

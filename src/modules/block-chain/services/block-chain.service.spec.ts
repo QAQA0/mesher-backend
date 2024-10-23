@@ -1,23 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlockChainService } from './block-chain.sevice';
 import { EthersModule } from '../../../providers/ethers/ethers.module';
+import { AppModule } from '../../../app.module';
+import { SlackModule } from '../../../providers/slack/slack.module';
+import { BlockEntityRepository } from '../repository/block-entity.repository';
+import { TransactionReceiptEntityRepository } from '../repository/transaction-receipt-entity.repository';
+import { LogEntityRepository } from '../repository/log-entity.repository';
 
 describe('BlockChainService', () => {
   let service: BlockChainService;
   const blockHash =
-    '0xc7c9625aa709521bdc2d920e3ec00f45c3e2f5c6c4b1ad7a7f41c4d5b4a8a77c';
+    '0x47d1a9521830fadb272f8e5e572b4774755f254651b042acd3f069dfc7137871';
   const transactionHash =
-    '0x6eb771a03ad23fed33ddf8c3076929f30afc78ebe9bc32fdbc0817f91138a604';
+    '0xd30763c0e657a7542c9764ee97c1e8c2dd61d5d67808409928d0cd82245614b9';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [EthersModule],
-      providers: [BlockChainService],
+      imports: [EthersModule, AppModule, SlackModule],
+      providers: [
+        BlockChainService,
+        BlockEntityRepository,
+        TransactionReceiptEntityRepository,
+        LogEntityRepository,
+      ],
     }).compile();
 
     service = module.get<BlockChainService>(BlockChainService);
   });
 
+  //Block 조회 기능 테스트
   it('block', async () => {
     const block = (await service.findBlock(blockHash)).block;
     expect(block).toHaveProperty('number');
@@ -27,13 +38,13 @@ describe('BlockChainService', () => {
     expect(block).toHaveProperty('gasLimit');
   });
 
+  //TransactionReceipt 조회 기능 테스트
   it('transactionReceipt', async () => {
-    const transaction = await service.findTransactionReceipt(transactionHash);
-    expect(transaction).toBeTruthy();
+    const transaction = (await service.findTransactionReceipt(transactionHash))
+      .transactionReceipt;
     expect(transaction).toHaveProperty('blockHash');
     expect(transaction).toHaveProperty('from');
     expect(transaction).toHaveProperty('gasPrice');
-    expect(transaction).toHaveProperty('logs');
-    expect(transaction).toHaveProperty('hash');
+    expect(transaction).toHaveProperty('transactionHash');
   });
 });
