@@ -1,6 +1,10 @@
 # mesher-backend
 매셔 백엔드 과제전형 리포지토리입니다.
 
+## 서버 실행 방법
+$ docker-compose up
+localhost:3000 포트로 접속
+
 테스트 작성 완료
 Docker-compose 설정 완료
 
@@ -9,7 +13,7 @@ Nest.js(Node version 20.11.1) </br>
 Ethers.js </br>
 Typescript </br>
 Docker  </br>
-Swagger API </br>
+Swagger API </br>
 
 ## API Docs
 Swagger API를 사용하여 API 문서를 개발하였습니다.
