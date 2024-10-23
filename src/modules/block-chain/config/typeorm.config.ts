@@ -11,7 +11,7 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: 'blockchain',
-      synchronize: false,
+      synchronize: true,
       dropSchema: false,
       keepConnectionAlive: true,
       logging: true,
