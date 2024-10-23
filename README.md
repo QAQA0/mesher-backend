@@ -2,9 +2,9 @@
 매셔 백엔드 과제전형 리포지토리입니다.
 
 ## 서버 실행 방법
-서버 실행 전 main.ts의 ethersService.getDatas 메서드에 초기 Block 데이터를 몇 개 가져올 지 입력해주세요. </br>
-$ docker-compose up 명령어 입력 </br>
-localhost:3000 포트로 접속 </br>
+1. 서버 실행 전 main.ts의 ethersService.getDatas 메서드에 초기 Block 데이터를 몇 개 가져올 지 입력해주세요. </br>
+2. $ docker-compose up 명령어 입력 </br>
+3. localhost:3000 포트로 접속 </br>
 
 ## 현재 진행도
 테스트 작성 완료 </br>
@@ -47,7 +47,13 @@ async findBlock(blockHash: string): Promise<BlockWithTransactionReceiptAndLogDto
 async findTransactionReceipt(transactionHash: string): Promise<TransactionReceiptEntity>
 - 트랜잭션 영수증 Hash를 기준으로 데이터베이스에 저장되어있는 트랜잭션 영수증, 로그 데이터를 가져옵니다.
 
+### Slack 봇
+
+- 1시간마다 서버 상태를 출력합니다.
+- 5분마다 데이터의 개수를 출력합니다.
+- 예외 발생 시 로그를 출력합니다.
+
 ## Notion
-https://political-tsunami-40f.notion.site/Mesher-Backend-12611fde6e0380b1b401c63cd5a7b876?pvs=4  </br>
+https://political-tsunami-40f.notion.site/Mesher-Backend-12611fde6e0380b1b401c63cd5a7b876?pvs=4 </br>
 
 - 개발 회고, 업무 진행 사항이 적혀 있습니다.
