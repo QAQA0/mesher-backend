@@ -6,10 +6,6 @@
 2. $ docker-compose up 명령어 입력 </br>
 3. localhost:3000 포트로 접속 </br>
 
-## 현재 진행도
-테스트 작성 완료 </br>
-Docker-compose 설정 완료 </br>
-
 ## 사용 스택
 Nest.js(Node version 20.11.1) </br>
 Ethers.js </br>
@@ -52,8 +48,3 @@ async findTransactionReceipt(transactionHash: string): Promise<TransactionReceip
 - 1시간마다 서버 상태를 출력합니다.
 - 5분마다 데이터의 개수를 출력합니다.
 - 예외 발생 시 로그를 출력합니다.
-
-## Notion
-https://political-tsunami-40f.notion.site/Mesher-Backend-12611fde6e0380b1b401c63cd5a7b876?pvs=4 </br>
-
-- 개발 회고, 업무 진행 사항이 적혀 있습니다.
